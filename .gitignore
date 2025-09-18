@@ -1,0 +1,4 @@
+# Ignore node_modules at any depth
+node_modules/
+**/node_modules/
+
