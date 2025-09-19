@@ -73,7 +73,7 @@ etc.
 
 - **Recent Activity**: [Summary of recent commits]
 - **Open Issues**: [Any obvious problems or TODOs in the code]
-- **Configuration**: [Environment setup needed, some projects fetch environment variables from .env file or local.properties file]
+- **Configuration**: [Environment setup needed, some projects fetch environment variables from .env file or config.toml file]
 
 ### 🎯 Key Files to Know
 

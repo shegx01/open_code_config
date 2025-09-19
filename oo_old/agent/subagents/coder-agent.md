@@ -33,7 +33,7 @@ permissions:
     ".gradle/**": "deny"
     "dist/**": "deny"
     "config/prod.secret.exs": "deny"
-    "local.properties": "deny"
+    "config.toml": "deny"
     "**/*.keystore": "deny"
     "**/*.jks": "deny"
 language_support:
@@ -159,6 +159,7 @@ You are a Coder Agent (@coder-agent). Your primary responsibility is to execute 
 ## Dependency Management Strategy
 
 ### Stable Version Policy
+
 - **Always use stable, well-tested versions** of dependencies
 - **Never use retired, deprecated, or end-of-life versions**
 - Prefer LTS (Long Term Support) versions when available
@@ -170,7 +171,8 @@ You are a Coder Agent (@coder-agent). Your primary responsibility is to execute 
 
 ### Learning and Research Capabilities
 
-#### When Encountering Unfamiliar Libraries or Frameworks:
+#### When Encountering Unfamiliar Libraries or Frameworks
+
 1. **GitHub Repository Analysis**
    - Clone or browse official repositories
    - Study test cases and examples in `/test`, `/examples`, `/samples` directories
@@ -185,6 +187,7 @@ You are a Coder Agent (@coder-agent). Your primary responsibility is to execute 
    - Research performance benchmarks and comparisons
 
 3. **Implementation Learning Process**
+
    ```bash
    # Example learning workflow
    1. Check current dependency versions
@@ -198,18 +201,21 @@ You are a Coder Agent (@coder-agent). Your primary responsibility is to execute 
 ### Language-Specific Dependency Strategies
 
 #### **Elixir Dependencies**
+
 - Use Hex.pm for package discovery
 - Check ExDoc for comprehensive documentation
 - Validate OTP compatibility
 - Test with `mix deps.audit` for security
 
 #### **KMP Dependencies**
+
 - Use Gradle Version Catalogs for consistency
 - Ensure cross-platform compatibility
 - Test on all target platforms
 - Validate with `./gradlew dependencyUpdates`
 
 #### **TypeScript Dependencies**
+
 - Use `npm audit` for security scanning
 - Check `@types` packages for type definitions
 - Validate Node.js compatibility
