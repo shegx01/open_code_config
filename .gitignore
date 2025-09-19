@@ -6,3 +6,5 @@ ogc/generated
 lang
 .venv
 .github
+.DS_Store
+
