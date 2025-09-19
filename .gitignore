@@ -1,4 +1,8 @@
 # Ignore node_modules at any depth
 node_modules/
 **/node_modules/
-
+oo_old
+ogc/generated
+lang
+.venv
+.github
