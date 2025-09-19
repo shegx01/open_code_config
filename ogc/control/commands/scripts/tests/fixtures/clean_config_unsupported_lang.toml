@@ -1,0 +1,2 @@
+[opencode.commands]
+clean = { enabled = true, lang = "python", agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [], additional_files_strategy = "merge", include_base_template = true }

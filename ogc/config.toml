@@ -7,6 +7,14 @@ model = "anthropic/claude-sonnet-4-20250514"
 # The default template is in control/commands/generic/git-commit.md
 # additional_files is a list of files to be included/passed to llm
 # additional_files_strategy = merge | replace, if merge, the additional_files will be merged with the template, if replace, the additional_files will replace the template
-commit = { enabled = true, vcs = "git", agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [], additional_files_strategy = "merge" }
+commit = { enabled = true, vcs = "git", agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
+], additional_files_strategy = "merge" }
 
-worktrees = { enabled = true, vcs = "git", agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [], additional_files_strategy = "merge" }
+worktrees = { enabled = true, vcs = "git", agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
+], additional_files_strategy = "merge" }
+
+# include_base_template = true will include the base template in the additional_files
+#  Path for base template is control/commands/generic/clean/base.md. lang = elixir | kotlin | typescript. more coming soon
+# Lang additional template in control/commands/generic/clean/<lang>.md
+clean = { enabled = true, lang = "elixir", agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
+], additional_files_strategy = "merge", include_base_template = true }

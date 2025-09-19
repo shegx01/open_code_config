@@ -27,7 +27,7 @@ def run_tests():
     
     # Print summary
     print("\n" + "="*70)
-    print("COMMIT GENERATOR TEST SUMMARY")
+    print("COMMAND GENERATOR TEST SUMMARY")
     print("="*70)
     print(f"Tests run: {result.testsRun}")
     print(f"Failures: {len(result.failures)}")
