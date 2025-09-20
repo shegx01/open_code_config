@@ -1,4 +1,4 @@
-# OpenCode Agents - Enterprise Multi-Language Development Ecosystem
+# OpenCode Agents - Custom Agent Configuration
 
 ## 🌟 Key Features
 - 🛡️ **Security-First Architecture**: OWASP compliance, comprehensive validation, authentication-first design
