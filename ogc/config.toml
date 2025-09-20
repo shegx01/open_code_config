@@ -34,3 +34,9 @@ optimizer = { enabled = true, lang = "elixir", agent = "build", model = "anthrop
 prompter = { enabled = true,  agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
 ], additional_files_strategy = "merge", include_base_template = true }
 
+# template = default | custom, if custom, the template_file must be specified
+# The default template is in control/commands/generic/context.md
+# additional_files is a list of files to be included/passed to llm
+# additional_files_strategy = merge | replace, if merge, the additional_files will be merged with the template, if replace, the additional_files will replace the template
+context = { enabled = true, agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
+], additional_files_strategy = "merge" }
