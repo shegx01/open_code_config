@@ -1,0 +1,2 @@
+[opencode.agents.subagents]
+debugger = {enabled = true, template = "default", lang = "elixir", additional_files = [], additional_files_strategy = "invalid_strategy", description = "Invalid strategy test", mode = "subagent"}

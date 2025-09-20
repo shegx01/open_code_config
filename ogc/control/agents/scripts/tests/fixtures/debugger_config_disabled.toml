@@ -1,0 +1,2 @@
+[opencode.agents.subagents]
+debugger = {enabled = false, template = "default", lang = "elixir", description = "Disabled debugger", mode = "subagent"}

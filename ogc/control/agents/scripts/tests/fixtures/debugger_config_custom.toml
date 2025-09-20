@@ -1,0 +1,2 @@
+[opencode.agents.subagents]
+debugger = {enabled = true, template = "custom", template_file = "custom_debugger.md", additional_files = [], additional_files_strategy = "merge", description = "Custom debugger", mode = "subagent", model = "anthropic/claude-sonnet-4-20250514", temperature = 0.1, permissions = { tools = { read = true, edit = true }, bash_rules = {}, edit_rules = {} } }

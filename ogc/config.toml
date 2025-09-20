@@ -20,6 +20,12 @@ clean = { enabled = true, lang = "elixir", agent = "build", model = "anthropic/c
 ], additional_files_strategy = "merge", include_base_template = true }
 
 # include_base_template = true will include the base template in the additional_files
+#  Path for base template is control/commands/generic/test/base.md. lang = elixir | kotlin | typescript. more coming soon
+# Lang additional template in control/commands/generic/test/<lang>.md
+test = { enabled = true, lang = "elixir", agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
+], additional_files_strategy = "merge", include_base_template = true }
+
+# include_base_template = true will include the base template in the additional_files
 #  Path for base template is control/commands/generic/optimizer/base.md. lang = elixir | kotlin | typescript. more coming soon
 # Lang additional template in control/commands/generic/optimizer/<lang>.md
 optimizer = { enabled = true, lang = "elixir", agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
@@ -31,7 +37,7 @@ optimizer = { enabled = true, lang = "elixir", agent = "build", model = "anthrop
 # additional_files_strategy = merge | replace, if merge, the additional_files will be merged with the template, if replace, the additional_files will replace the template
 # include_base_template = true will include the base template in the additional_files
 #  Path for base template is control/commands/generic/prompter/base.md
-prompter = { enabled = true,  agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
+prompter = { enabled = true, agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
 ], additional_files_strategy = "merge", include_base_template = true }
 
 # template = default | custom, if custom, the template_file must be specified
@@ -40,3 +46,14 @@ prompter = { enabled = true,  agent = "build", model = "anthropic/claude-sonnet-
 # additional_files_strategy = merge | replace, if merge, the additional_files will be merged with the template, if replace, the additional_files will replace the template
 context = { enabled = true, agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
 ], additional_files_strategy = "merge" }
+
+[opencode.agents.subagents]
+# template = default | custom, if custom, the template_file must be specified
+# The default template is in control/agents/debugger/base.md
+# additional_files is a list of files to be included/passed to llm
+# additional_files_strategy = merge | replace, if merge, the additional_files will be merged with the template, if replace, the additional_files will replace the template
+# include_base_template = true will include the base template in the additional_files
+# lang = elixir | kotlin | typescript. more coming soon
+
+debugger = {enabled = true, template = "default", lang = "elixir", template_file = "", additional_files = [
+], additional_files_strategy = "merge", include_base_template = true, description = "Advanced debugging specialist human-friendly feedback", mode = "subagent", model = "anthropic/claude-sonnet-4-20250514", temperature = 0.1, permissions = { tools = { read = true, edit = true, write = false, grep = true, glob = true, patch = false, bash = true }, bash_rules = { "rm -rf *" = "deny", "sudo *" = "deny", "mix *" = "allow", "./gradlew *" = "allow", "npm *" = "allow", "yarn *" = "allow", "git *" = "allow" }, edit_rules = { "**/*.env*" = "deny", "**/*.key" = "deny", "**/*.secret" = "deny", "**/*.pem" = "deny", "node_modules/**" = "deny", ".git/**" = "deny", "_build/**" = "deny", "deps/**" = "deny", "build/**" = "deny" } } }

@@ -1,0 +1,397 @@
+#!/usr/bin/env python3
+"""
+Debugger agent generator script.
+
+This script parses the TOML configuration file and generates the appropriate
+debugger agent configuration based on the settings. It validates the configuration
+and generates a markdown file with YAML frontmatter matching the agent format.
+"""
+
+import json
+import os
+import sys
+import yaml
+from pathlib import Path
+from typing import Dict, Any, Optional
+
+# Handle tomllib import for different Python versions
+try:
+    import tomllib
+except ImportError:
+    try:
+        import tomli as tomllib
+    except ImportError:
+        print("Error: Neither tomllib (Python 3.11+) nor tomli package is available.", file=sys.stderr)
+        print("Please install tomli: pip install tomli", file=sys.stderr)
+        sys.exit(1)
+
+
+class DebuggerAgentGenerator:
+    """Generates debugger agent configuration from TOML settings."""
+    
+    def __init__(self, config_path: str = "ogc/config.toml"):
+        """Initialize the generator with the config file path."""
+        self.config_path = Path(config_path)
+        if self.config_path.is_absolute():
+            # For absolute paths, find the project root by looking for ogc directory
+            self.project_root = self.config_path.parent.parent
+        else:
+            # For relative paths, resolve relative to current working directory
+            self.config_path = self.config_path.resolve()
+            self.project_root = self.config_path.parent.parent
+        
+    def load_toml_config(self) -> Dict[str, Any]:
+        """Load and parse the TOML configuration file."""
+        try:
+            with open(self.config_path, 'rb') as f:
+                return tomllib.load(f)
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Configuration file not found: {self.config_path}")
+        except tomllib.TOMLDecodeError as e:
+            raise ValueError(f"Invalid TOML configuration: {e}")
+    
+    def validate_debugger_config(self, config: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        Validate the debugger configuration and return the debugger settings.
+        
+        Returns None if the configuration should not generate anything.
+        """
+        # The debugger config is under opencode.agents.subagents
+        opencode_config = config.get('opencode', {})
+        agents_config = opencode_config.get('agents', {})
+        subagents_config = agents_config.get('subagents', {})
+        debugger_config = subagents_config.get('debugger', {})
+        
+        if not debugger_config:
+            print("No debugger configuration found in TOML file")
+            return None
+            
+        # Check if enabled is false
+        if not debugger_config.get('enabled', True):
+            print("Debugger agent is disabled (enabled = false)")
+            return None
+            
+        return debugger_config
+    
+    def validate_and_read_template(self, debugger_config: Dict[str, Any]) -> str:
+        """
+        Validate the template configuration and return the template content.
+        
+        Handles language-specific templates, additional files with merge/replace strategies.
+        Raises an error if custom template is specified but file is empty or missing.
+        """
+        template_type = debugger_config.get('template', 'default')
+        template_file = debugger_config.get('template_file', '')
+        additional_files = debugger_config.get('additional_files', [])
+        additional_files_strategy = debugger_config.get('additional_files_strategy', 'merge')
+        include_base_template = debugger_config.get('include_base_template', True)
+        lang = debugger_config.get('lang', '')
+        
+        # Validate language if provided
+        supported_languages = ['elixir', 'kotlin', 'typescript']
+        if lang and lang not in supported_languages:
+            raise ValueError(f"Unsupported language: {lang}. Supported languages: {', '.join(supported_languages)}")
+        
+        # Validate additional_files_strategy
+        if additional_files_strategy not in ['merge', 'replace']:
+            raise ValueError(f"Invalid additional_files_strategy: {additional_files_strategy}. Must be 'merge' or 'replace'")
+        
+        # Get main template content (unless using replace strategy with additional files)
+        main_template_content = ""
+        if additional_files_strategy != 'replace' or not additional_files:
+            if template_type == 'default':
+                # Build template content based on include_base_template and language
+                template_content_parts = []
+                
+                # Include base template if requested
+                if include_base_template:
+                    base_template_path = self.project_root / "ogc/control/agents/debugger/base.md"
+                    if not base_template_path.exists():
+                        raise FileNotFoundError(f"Base template not found: {base_template_path}")
+                    
+                    try:
+                        with open(base_template_path, 'r', encoding='utf-8') as f:
+                            base_content = f.read()
+                            template_content_parts.append(base_content)
+                    except Exception as e:
+                        raise ValueError(f"Failed to read base template {base_template_path}: {e}")
+                
+                # Include language-specific template if language is specified
+                if lang:
+                    lang_template_path = self.project_root / f"ogc/control/agents/debugger/{lang}.md"
+                    if not lang_template_path.exists():
+                        raise FileNotFoundError(f"Language template not found: {lang_template_path}")
+                    
+                    if lang_template_path.stat().st_size == 0:
+                        raise ValueError(f"Language template is empty: {lang_template_path}")
+                    
+                    try:
+                        with open(lang_template_path, 'r', encoding='utf-8') as f:
+                            lang_content = f.read()
+                            template_content_parts.append(f"\n\n# {lang.title()} Debugging Specifics\n\n{lang_content}")
+                    except Exception as e:
+                        raise ValueError(f"Failed to read language template {lang_template_path}: {e}")
+                
+                # Combine template parts
+                if template_content_parts:
+                    main_template_content = "\n".join(template_content_parts)
+                else:
+                    raise ValueError("No template content available. Either include_base_template must be true or a language must be specified.")
+                    
+            elif template_type == 'custom':
+                if not template_file:
+                    raise ValueError("Custom template specified but template_file is empty")
+                
+                # Check if custom template file exists and is not empty
+                custom_template_path = Path(template_file)
+                if not custom_template_path.is_absolute():
+                    custom_template_path = self.project_root / custom_template_path
+                    
+                if not custom_template_path.exists():
+                    raise FileNotFoundError(f"Custom template file not found: {custom_template_path}")
+                    
+                if custom_template_path.stat().st_size == 0:
+                    raise ValueError(f"Custom template file is empty: {custom_template_path}")
+                    
+                # Read custom template content
+                try:
+                    with open(custom_template_path, 'r', encoding='utf-8') as f:
+                        main_template_content = f.read()
+                except Exception as e:
+                    raise ValueError(f"Failed to read custom template file {custom_template_path}: {e}")
+            else:
+                raise ValueError(f"Unknown template type: {template_type}")
+        
+        # Process additional files
+        additional_content = self._process_additional_files(additional_files)
+        
+        # Apply strategy
+        if additional_files_strategy == 'replace' and additional_files:
+            return additional_content
+        elif additional_files_strategy == 'merge':
+            if additional_content:
+                return f"{main_template_content}\n\n# Additional Files\n\n{additional_content}"
+            else:
+                return main_template_content
+        else:
+            return main_template_content
+    
+    def _process_additional_files(self, additional_files: list) -> str:
+        """
+        Process additional files and return their combined content.
+        
+        Args:
+            additional_files: List of file paths to process
+            
+        Returns:
+            Combined content of all additional files
+        """
+        if not additional_files:
+            return ""
+        
+        combined_content = []
+        
+        for file_path in additional_files:
+            # Resolve file path
+            additional_file_path = Path(file_path)
+            if not additional_file_path.is_absolute():
+                additional_file_path = self.project_root / additional_file_path
+            
+            # Validate file exists
+            if not additional_file_path.exists():
+                raise FileNotFoundError(f"Additional file not found: {additional_file_path}")
+            
+            # Read file content
+            try:
+                with open(additional_file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    if content.strip():  # Only add non-empty files
+                        combined_content.append(f"## {additional_file_path.name}\n\n{content}")
+            except Exception as e:
+                raise ValueError(f"Failed to read additional file {additional_file_path}: {e}")
+        
+        return "\n\n".join(combined_content)
+    
+    def _get_output_path(self, debugger_config: Dict[str, Any]) -> str:
+        """
+        Determine the output path based on the agent mode.
+        
+        If mode is 'subagent', output to '.opencode/agent/subagent/debugger.md'
+        Otherwise, output to '.opencode/agent/debugger.md'
+        """
+        mode = debugger_config.get('mode', 'primary')
+        
+        if mode == 'subagent':
+            return "ogc/generated/.opencode/agent/subagent/debugger.md"
+        else:
+            return "ogc/generated/.opencode/agent/debugger.md"
+    
+    def _extract_agent_config(self, debugger_config: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Extract agent configuration excluding config-specific keys.
+        
+        Config keys to exclude: enabled, template, template_file, additional_files, 
+        additional_files_strategy, include_base_template, lang
+        """
+        # Keys that should not be included in the final agent configuration
+        config_keys = {
+            'enabled', 'template', 'template_file', 'additional_files', 
+            'additional_files_strategy', 'include_base_template', 'lang'
+        }
+        
+        # Extract agent configuration excluding config keys
+        agent_config = {}
+        for key, value in debugger_config.items():
+            if key not in config_keys:
+                agent_config[key] = value
+        
+        return agent_config
+    
+    def _format_permissions(self, permissions: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Format permissions structure to match the expected YAML format.
+        
+        Converts the nested permissions structure to the proper format.
+        """
+        if not permissions:
+            return {}
+        
+        formatted_permissions = {}
+        
+        # Handle tools permissions
+        tools = permissions.get('tools', {})
+        if tools:
+            formatted_permissions['tools'] = tools
+        
+        # Handle bash_rules as bash permissions
+        bash_rules = permissions.get('bash_rules', {})
+        if bash_rules:
+            formatted_permissions['bash'] = bash_rules
+        
+        # Handle edit_rules as edit permissions
+        edit_rules = permissions.get('edit_rules', {})
+        if edit_rules:
+            formatted_permissions['edit'] = edit_rules
+        
+        return formatted_permissions
+    
+    def write_agent_config(self, debugger_config: Dict[str, Any], template_content: str) -> None:
+        """Write the agent configuration to a Markdown file with YAML frontmatter."""
+        output_path = self._get_output_path(debugger_config)
+        output_file = self.project_root / output_path
+        
+        # Ensure the output directory exists
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Strip existing frontmatter from template content if present
+        clean_content = self._strip_frontmatter(template_content)
+        
+        # Extract agent configuration (excluding config keys)
+        agent_config = self._extract_agent_config(debugger_config)
+        
+        # Format permissions properly
+        if 'permissions' in agent_config:
+            agent_config['permissions'] = self._format_permissions(agent_config['permissions'])
+        
+        # Build the YAML frontmatter
+        frontmatter_lines = ["---"]
+        
+        # Add each configuration item
+        for key, value in agent_config.items():
+            if key == 'permissions':
+                # Handle permissions as a nested structure
+                frontmatter_lines.append(f"{key}:")
+                for perm_key, perm_value in value.items():
+                    if isinstance(perm_value, dict):
+                        frontmatter_lines.append(f"  {perm_key}:")
+                        for sub_key, sub_value in perm_value.items():
+                            if isinstance(sub_value, str):
+                                frontmatter_lines.append(f'    "{sub_key}": "{sub_value}"')
+                            else:
+                                frontmatter_lines.append(f'    {sub_key}: {str(sub_value).lower()}')
+                    else:
+                        frontmatter_lines.append(f"  {perm_key}: {str(value).lower()}")
+            elif isinstance(value, str):
+                frontmatter_lines.append(f'{key}: "{value}"')
+            elif isinstance(value, (int, float)):
+                frontmatter_lines.append(f'{key}: {value}')
+            elif isinstance(value, bool):
+                frontmatter_lines.append(f'{key}: {str(value).lower()}')
+            else:
+                frontmatter_lines.append(f'{key}: {value}')
+        
+        frontmatter_lines.append("---")
+        frontmatter_lines.append("")  # Empty line after frontmatter
+        
+        # Combine frontmatter and content
+        complete_content = "\n".join(frontmatter_lines) + clean_content
+        
+        # Write the complete content
+        with open(output_file, 'w', encoding='utf-8', newline='\n') as f:
+            f.write(complete_content)
+        
+        print(f"Generated debugger agent configuration: {output_file}")
+    
+    def _strip_frontmatter(self, content: str) -> str:
+        """Strip YAML frontmatter from content if present."""
+        lines = content.split('\n')
+        
+        # Check if content starts with frontmatter
+        if lines and lines[0].strip() == '---':
+            # Find the closing frontmatter delimiter
+            for i, line in enumerate(lines[1:], 1):
+                if line.strip() == '---':
+                    # Return content after the closing delimiter, skipping empty lines
+                    remaining_lines = lines[i+1:]
+                    # Skip leading empty lines
+                    while remaining_lines and not remaining_lines[0].strip():
+                        remaining_lines = remaining_lines[1:]
+                    return '\n'.join(remaining_lines)
+        
+        # No frontmatter found, return original content
+        return content
+    
+    def generate(self) -> bool:
+        """
+        Main generation method.
+        
+        Returns True if configuration was generated, False if skipped.
+        """
+        try:
+            # Load TOML configuration
+            config = self.load_toml_config()
+            
+            # Validate debugger configuration
+            debugger_config = self.validate_debugger_config(config)
+            if debugger_config is None:
+                return False
+            
+            # Validate template and read content
+            template_content = self.validate_and_read_template(debugger_config)
+            
+            # Write the agent configuration file
+            self.write_agent_config(debugger_config, template_content)
+            
+            return True
+            
+        except Exception as e:
+            print(f"Error generating debugger agent configuration: {e}", file=sys.stderr)
+            sys.exit(1)
+
+
+def main():
+    """Main entry point for the script."""
+    # Determine config path (can be overridden via command line argument)
+    config_path = sys.argv[1] if len(sys.argv) > 1 else "ogc/config.toml"
+    
+    generator = DebuggerAgentGenerator(config_path)
+    success = generator.generate()
+    
+    if success:
+        print("Debugger agent configuration generated successfully")
+    else:
+        print("Debugger agent configuration generation skipped")
+
+
+if __name__ == "__main__":
+    main()

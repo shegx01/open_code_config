@@ -1,0 +1,2 @@
+[opencode.agents.subagents]
+debugger = {enabled = true, template = "default", lang = "typescript", template_file = "", additional_files = [], additional_files_strategy = "merge", include_base_template = false, description = "TypeScript debugging specialist", mode = "subagent", model = "anthropic/claude-sonnet-4-20250514", temperature = 0.0, permissions = { tools = { read = true, edit = false, write = false, grep = true, glob = true, patch = false, bash = false }, bash_rules = {}, edit_rules = {} } }
