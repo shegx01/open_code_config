@@ -96,6 +96,13 @@ class CoderAgentGenerator:
         if additional_files_strategy not in ['merge', 'replace']:
             raise ValueError(f"Invalid additional_files_strategy: {additional_files_strategy}. Must be 'merge' or 'replace'")
 
+        # Validate template configuration consistency
+        if template_type == 'custom' and not template_file:
+            raise ValueError("Custom template specified but template_file is empty")
+        
+        if template_type == 'default' and template_file:
+            print(f"Warning: template_file '{template_file}' specified but template is 'default'. template_file will be ignored.")
+
         # Get main template content (unless using replace strategy with additional files)
         main_template_content = ""
         if additional_files_strategy != 'replace' or not additional_files:
@@ -122,13 +129,14 @@ class CoderAgentGenerator:
                     if not lang_template_path.exists():
                         raise FileNotFoundError(f"Language template not found: {lang_template_path}")
 
-                    # Only include language template if it has content
-                    if lang_template_path.stat().st_size > 0:
+                    # Handle empty language template files gracefully
+                    if lang_template_path.stat().st_size == 0:
+                        print(f"Warning: Language template is empty: {lang_template_path}. Skipping language-specific content.")
+                    else:
                         try:
                             with open(lang_template_path, 'r', encoding='utf-8') as f:
                                 lang_content = f.read()
-                                if lang_content.strip():  # Only add if content is not just whitespace
-                                    template_content_parts.append(f"\n\n# {lang.title()} Coding Specifics\n\n{lang_content}")
+                                template_content_parts.append(f"\n\n# {lang.title()} Coding Specifics\n\n{lang_content}")
                         except Exception as e:
                             raise ValueError(f"Failed to read language template {lang_template_path}: {e}")
 

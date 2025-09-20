@@ -89,31 +89,32 @@ class DocumentationAgentGenerator:
         if additional_files_strategy not in ['merge', 'replace']:
             raise ValueError(f"Invalid additional_files_strategy: {additional_files_strategy}. Must be 'merge' or 'replace'")
 
+        # Validate template configuration consistency
+        if template_type == 'custom' and not template_file:
+            raise ValueError("Custom template specified but template_file is empty")
+        
+        if template_type == 'default' and template_file:
+            print(f"Warning: template_file '{template_file}' specified but template is 'default'. template_file will be ignored.")
+
         # Get main template content (unless using replace strategy with additional files)
         main_template_content = ""
         if additional_files_strategy != 'replace' or not additional_files:
             if template_type == 'default':
-                # Use the template_file specified in config
-                if not template_file:
-                    raise ValueError("Default template specified but template_file is empty")
-
-                # Check if template file exists and is not empty
-                default_template_path = Path(template_file)
-                if not default_template_path.is_absolute():
-                    default_template_path = self.project_root / default_template_path
-
+                # Use default template location for documentation subagent
+                default_template_path = self.project_root / "control/agents/subagents/documentation.md"
+                
                 if not default_template_path.exists():
-                    raise FileNotFoundError(f"Template file not found: {default_template_path}")
+                    raise FileNotFoundError(f"Default template file not found: {default_template_path}")
 
                 if default_template_path.stat().st_size == 0:
-                    raise ValueError(f"Template file is empty: {default_template_path}")
+                    raise ValueError(f"Default template file is empty: {default_template_path}")
 
                 # Read template content
                 try:
                     with open(default_template_path, 'r', encoding='utf-8') as f:
                         main_template_content = f.read()
                 except Exception as e:
-                    raise ValueError(f"Failed to read template file {default_template_path}: {e}")
+                    raise ValueError(f"Failed to read default template file {default_template_path}: {e}")
 
             elif template_type == 'custom':
                 if not template_file:
