@@ -1,0 +1,6 @@
+[gh.workflow]
+env_key = "ANTHROPIC_API_KEY"
+model = "anthropic/claude-sonnet-4-20250514"
+
+[opencode.commands]
+commit = { enabled = true, vcs = "git", agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "custom", template_file = "control/commands/scripts/tests/fixtures/empty_template.md" }

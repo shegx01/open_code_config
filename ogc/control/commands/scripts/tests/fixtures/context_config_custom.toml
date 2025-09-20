@@ -1,2 +1,0 @@
-[opencode.commands]
-context = { enabled = true, agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "custom", template_file = "ogc/control/commands/scripts/tests/fixtures/context_custom_template.md", additional_files = [], additional_files_strategy = "merge" }

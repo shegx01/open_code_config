@@ -2,7 +2,7 @@
 node_modules/
 **/node_modules/
 oo_old
-ogc/generated
+generated/
 lang
 .venv
 .github
