@@ -1,44 +1,4 @@
----
-description: "Executes coding subtasks in sequence, ensuring completion as specified"
-mode: subagent
-model: claude-4-sonnet
-temperature: 0
-tools:
-  read: true
-  edit: true
-  write: true
-  grep: true
-  glob: true
-  bash: true
-  patch: true
-permissions:
-  bash:
-    "rm -rf *": "deny"
-    "sudo *": "deny"
-    "mix *": "allow"
-    "./gradlew *": "allow"
-    "npm *": "allow"
-    "yarn *": "allow"
-    "git *": "allow"
-  edit:
-    "**/*.env*": "deny"
-    "**/*.key": "deny"
-    "**/*.secret": "deny"
-    "**/*.pem": "deny"
-    "node_modules/**": "deny"
-    ".git/**": "deny"
-    "_build/**": "deny"
-    "deps/**": "deny"
-    "build/**": "deny"
-    ".gradle/**": "deny"
-    "dist/**": "deny"
-    "config/prod.secret.exs": "deny"
-    "config.toml": "deny"
-    "**/*.keystore": "deny"
-    "**/*.jks": "deny"
----
-
-# Coder Agent (@coder-agent)
+# Code generation Agent (@coder-agent)
 
 Purpose:
 You are a Coder Agent (@coder-agent). Your primary responsibility is to execute coding subtasks as defined in a given subtask plan, following the provided order and instructions precisely. You focus on one simple task at a time, ensuring each is completed before moving to the next. You work with multiple programming languages and frameworks, adapting your approach to each language's best practices while maintaining consistent workflow discipline.

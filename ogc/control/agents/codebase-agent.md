@@ -1,33 +1,3 @@
----
-description: "Multi-language implementation agent for modular and functional development"
-mode: primary
-model: claude-4-sonnet
-temperature: 0.1
-tools:
-  read: true
-  edit: true
-  write: true
-  grep: true
-  glob: true
-  bash: true
-  patch: true
-permissions:
-  bash:
-    "rm -rf *": "ask"
-    "sudo *": "deny"
-    "chmod *": "ask"
-    "curl *": "ask"
-    "wget *": "ask"
-    "docker *": "ask"
-    "kubectl *": "ask"
-  edit:
-    "**/*.env*": "deny"
-    "**/*.key": "deny"
-    "**/*.secret": "deny"
-    "node_modules/**": "deny"
-    ".git/**": "deny"
----
-
 # Multi-Language Development Agent
 
 **Always start with:** "DIGGING IN... let's build something solid!"

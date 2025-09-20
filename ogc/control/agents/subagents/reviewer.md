@@ -1,21 +1,3 @@
----
-description: "Code review, security, and quality assurance agent"
-mode: subagent
-model: claude-4-sonnet
-temperature: 0.1
-tools:
-  read: true
-  grep: true
-  glob: true
-  bash: false
-  edit: false
-  write: false
-permissions:
-  bash:
-    "*": "deny"
-  edit:
-    "**/*": "deny"
----
 
 # Review Agent
 

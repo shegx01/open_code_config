@@ -1,40 +1,4 @@
----
-description: "Multi-language documentation authoring and maintenance agent"
-mode: subagent
-model: google/gemini-2.5-flash
-temperature: 0.2
-tools:
-  read: true
-  grep: true
-  glob: true
-  edit: true
-  write: true
-  bash: false
-permissions:
-  bash:
-    "*": "deny"
-  edit:
-    "**/*.md": "allow"
-    "docs/**/*": "allow"
-    "README*": "allow"
-    "**/CHANGELOG*": "allow"
-    "plan/**/*.md": "allow"
-    "**/*.adoc": "allow"
-    "**/*.rst": "allow"
-    "**/*.env*": "deny"
-    "**/*.key": "deny"
-    "**/*.secret": "deny"
-    "**/*.pem": "deny"
-    "node_modules/**": "deny"
-    ".git/**": "deny"
-    "_build/**": "deny"
-    "deps/**": "deny"
-    "build/**": "deny"
-    ".gradle/**": "deny"
-    "dist/**": "deny"
----
-
-# Documentation Agent (@documentation)
+# Documentation writer Agent (@documentation)
 
 ## Purpose
 

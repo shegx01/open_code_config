@@ -47,6 +47,18 @@ prompter = { enabled = true, agent = "build", model = "anthropic/claude-sonnet-4
 context = { enabled = true, agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
 ], additional_files_strategy = "merge" }
 
+[opencode.agents]
+# Primary agents configuration section
+# template = default | custom, if custom, the template_file must be specified
+# additional_files is a list of files to be included/passed to llm
+# additional_files_strategy = merge | replace, if merge, the additional_files will be merged with the template, if replace, the additional_files will replace the template
+
+codebase-agent = {enabled = true, template = "default", template_file = "ogc/control/agents/codebase-agent.md", additional_files = [
+], additional_files_strategy = "merge", description = "Multi-language implementation agent for modular and functional development", mode = "primary", model = "claude-4-sonnet", temperature = 0.1, permissions = { tools = { read = true, edit = true, write = true, grep = true, glob = true, bash = true, patch = true }, bash_rules = { "rm -rf *" = "ask", "sudo *" = "deny", "chmod *" = "ask", "curl *" = "ask", "wget *" = "ask", "docker *" = "ask", "kubectl *" = "ask" }, edit_rules = { "**/*.env*" = "deny", "**/*.key" = "deny", "**/*.secret" = "deny", "node_modules/**" = "deny", ".git/**" = "deny" } } }
+
+task-manager = {enabled = true, template = "default", template_file = "ogc/control/agents/task-manager.md", additional_files = [
+], additional_files_strategy = "merge", description = "Breaks down complex features into small, verifiable subtasks", mode = "primary", model = "claude-4-sonnet", temperature = 0.1, permissions = { tools = { read = true, edit = true, write = true, grep = true, glob = true, bash = false, patch = true }, bash_rules = { "*" = "deny" }, edit_rules = { "**/*.env*" = "deny", "**/*.key" = "deny", "**/*.secret" = "deny", "node_modules/**" = "deny", ".git/**" = "deny" } } }
+
 [opencode.agents.subagents]
 # template = default | custom, if custom, the template_file must be specified
 # The default template is in control/agents/debugger/base.md
@@ -57,3 +69,20 @@ context = { enabled = true, agent = "build", model = "anthropic/claude-sonnet-4-
 
 debugger = {enabled = true, template = "default", lang = "elixir", template_file = "", additional_files = [
 ], additional_files_strategy = "merge", include_base_template = true, description = "Advanced debugging specialist human-friendly feedback", mode = "subagent", model = "anthropic/claude-sonnet-4-20250514", temperature = 0.1, permissions = { tools = { read = true, edit = true, write = false, grep = true, glob = true, patch = false, bash = true }, bash_rules = { "rm -rf *" = "deny", "sudo *" = "deny", "mix *" = "allow", "./gradlew *" = "allow", "npm *" = "allow", "yarn *" = "allow", "git *" = "allow" }, edit_rules = { "**/*.env*" = "deny", "**/*.key" = "deny", "**/*.secret" = "deny", "**/*.pem" = "deny", "node_modules/**" = "deny", ".git/**" = "deny", "_build/**" = "deny", "deps/**" = "deny", "build/**" = "deny" } } }
+
+# Simple subagents (no lang support)
+documentation = {enabled = true, template = "default", template_file = "ogc/control/agents/subagents/documentation.md", additional_files = [
+], additional_files_strategy = "merge", description = "Multi-language documentation authoring and maintenance agent", mode = "subagent", model = "google/gemini-2.5-flash", temperature = 0.2, permissions = { tools = { read = true, grep = true, glob = true, edit = true, write = true, bash = false }, bash_rules = { "*" = "deny" }, edit_rules = { "**/*.md" = "allow", "docs/**/*" = "allow", "README*" = "allow", "**/CHANGELOG*" = "allow", "plan/**/*.md" = "allow", "**/*.adoc" = "allow", "**/*.rst" = "allow", "**/*.env*" = "deny", "**/*.key" = "deny", "**/*.secret" = "deny", "**/*.pem" = "deny", "node_modules/**" = "deny", ".git/**" = "deny", "_build/**" = "deny", "deps/**" = "deny", "build/**" = "deny", ".gradle/**" = "deny", "dist/**" = "deny" } } }
+
+reviewer = {enabled = true, template = "default", template_file = "ogc/control/agents/subagents/reviewer.md", additional_files = [
+], additional_files_strategy = "merge", description = "Code review, security, and quality assurance agent", mode = "subagent", model = "claude-4-sonnet", temperature = 0.1, permissions = { tools = { read = true, grep = true, glob = true, bash = false, edit = false, write = false }, bash_rules = { "*" = "deny" }, edit_rules = { "**/*" = "deny" } } }
+
+tester = {enabled = true, template = "default", template_file = "ogc/control/agents/subagents/tester.md", additional_files = [
+], additional_files_strategy = "merge", description = "Test authoring and TDD agent", mode = "subagent", model = "google/gemini-2.5-flash", temperature = 0.1, permissions = { tools = { read = true, grep = true, glob = true, edit = true, write = true, bash = true }, bash_rules = { "rm -rf *" = "ask", "sudo *" = "deny" }, edit_rules = { "**/*.env*" = "deny", "**/*.key" = "deny", "**/*.secret" = "deny" } } }
+
+# Multi-language subagents (with lang support)
+code-pattern-analyst = {enabled = true, template = "default", lang = "elixir", template_file = "", additional_files = [
+], additional_files_strategy = "merge", include_base_template = true, description = "Multi-language pattern codebase", mode = "subagent", model = "google/gemini-2.5-flash", temperature = 0.1, permissions = { tools = { read = true, grep = true, glob = true, bash = false, edit = false, write = false }, bash_rules = { "*" = "deny" }, edit_rules = { "**/*" = "deny" } } }
+
+coder-agent = {enabled = true, template = "default", lang = "elixir", template_file = "", additional_files = [
+], additional_files_strategy = "merge", include_base_template = true, description = "Executes coding subtasks in sequence, ensuring completion as specified", mode = "subagent", model = "claude-4-sonnet", temperature = 0, permissions = { tools = { read = true, edit = true, write = true, grep = true, glob = true, bash = true, patch = true }, bash_rules = { "rm -rf *" = "deny", "sudo *" = "deny", "mix *" = "allow", "./gradlew *" = "allow", "npm *" = "allow", "yarn *" = "allow", "git *" = "allow" }, edit_rules = { "**/*.env*" = "deny", "**/*.key" = "deny", "**/*.secret" = "deny", "**/*.pem" = "deny", "node_modules/**" = "deny", ".git/**" = "deny", "_build/**" = "deny", "deps/**" = "deny", "build/**" = "deny", ".gradle/**" = "deny", "dist/**" = "deny", "config/prod.secret.exs" = "deny", "config.toml" = "deny", "**/*.keystore" = "deny", "**/*.jks" = "deny" } } }

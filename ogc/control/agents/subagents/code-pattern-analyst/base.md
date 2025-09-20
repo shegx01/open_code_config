@@ -1,22 +1,3 @@
----
-description: "Multi-language pattern codebase"
-mode: subagent
-model: google/gemini-2.5-flash
-temperature: 0.1
-tools:
-  read: true
-  grep: true
-  glob: true
-  bash: false
-  edit: false
-  write: false
-permissions:
-  bash:
-    "*": "deny"
-  edit:
-    "**/*": "deny"
----
-
 ## Core Responsibilities
 
 ### Multi-Language Pattern Recognition
