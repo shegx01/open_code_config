@@ -1,10 +1,6 @@
 # OpenCode Agents - Enterprise Multi-Language Development Ecosystem
 
-A comprehensive suite of security-first agents designed for enterprise-grade development across **Elixir**, **Kotlin Multiplatform (KMP)**, and **TypeScript** ecosystems. This system provides sophisticated task decomposition, implementation, security review, and quality assurance workflows.
-
 ## 🌟 Key Features
-
-- 🎯 **Multi-Language Mastery**: Native support for Elixir (OTP), KMP (expect/actual), TypeScript (type-safe)
 - 🛡️ **Security-First Architecture**: OWASP compliance, comprehensive validation, authentication-first design
 - 🔄 **Two-Phase Approval Workflow**: Plan → Approval → Implementation with quality gates
 - 🤖 **Intelligent Agent Coordination**: Primary agents, specialized subagents, and command agents
@@ -20,18 +16,88 @@ A comprehensive suite of security-first agents designed for enterprise-grade dev
 curl -sSL https://opencode.dev/install.sh | bash
 ```
 
-### 2. Initialize Project
+### 2. Generate Agent Configuration
 
 ```bash
-# Clone or initialize with OpenCode Agents
-git clone <your-repo>
-cd <your-repo>
+# Clone this repository
+git clone git@github.com:shegx01/open_code_config.git
+cd opencode-agents
+
+# Run the initialization script
+python init.py
+```
+
+This will generate all agent and command configurations in the `generated/.opencode/` directory.
+
+**What the initialization script does:**
+
+- ✅ Checks and installs required Python packages (PyYAML, tomli)
+- 🔍 Discovers all 15 generators (8 agents + 7 commands)
+- ⚙️ Generates configuration files for all agents and commands
+- 📊 Provides detailed success/failure/warning feedback
+- 🎯 Creates ready-to-use `.opencode/` directory structure
+
+**Generated directory structure:**
+
+```text
+generated/.opencode/
+├── agent/
+│   ├── codebase-agent.md          # Primary implementation agent
+│   ├── task-manager.md            # Task breakdown agent
+│   └── subagent/
+│       ├── coder-agent.md         # Sequential task executor
+│       ├── code-pattern-analyst.md # Pattern analysis
+│       ├── debugger.md            # Multi-language debugger
+│       ├── documentation.md       # Documentation specialist
+│       ├── reviewer.md            # Security reviewer
+│       └── tester.md              # Test specialist
+└── command/
+    ├── clean.md                   # Repository cleanup
+    ├── commit.md                  # Smart commit messages
+    ├── context.md                 # Context analysis
+    ├── optimizer.md               # Performance optimization
+    ├── prompter.md                # Prompt engineering
+    ├── test.md                    # Test execution
+    └── worktrees.md               # Git worktree management
+```
+
+### 3. Customize Configuration (Optional)
+
+Before copying to your project, you can customize the generated configuration:
+
+```bash
+# Review generated agents and commands
+ls -la generated/.opencode/agent/
+ls -la generated/.opencode/command/
+
+# Edit any agent configurations as needed
+# Example: Modify language settings, permissions, or templates
+```
+
+### 4. Copy Generated Configuration to Your Project
+
+```bash
+# Copy the generated configuration to your project root
+cp -r generated/.opencode/ /path/to/your/project/
+
+# Navigate to your project
+cd /path/to/your/project/
 
 # Verify agent configuration
 opencode --list-agents
 ```
 
-### 3. Start Development Workflow
+### 5. Initialize Your Project with OpenCode Agents
+
+```bash
+# In your project directory (with .opencode/ folder)
+opencode init
+
+# Verify agents are available
+opencode --list-agents
+```
+
+### 6. Start Development Workflow
 
 ```bash
 # Complex feature development (recommended)
@@ -56,7 +122,6 @@ opencode --agent reviewer "Review authentication module for vulnerabilities"
 - **Purpose**: Security-first implementation across all supported languages
 - **Workflow**: Mandatory two-phase (Plan → Approval → Implementation)
 - **Security**: OWASP compliance, comprehensive validation, authentication-first design
-- **Languages**: Elixir (OTP patterns), KMP (expect/actual), TypeScript (type-safe)
 
 **[`task-manager`](.opencode/agent/task-manager.md)** - Complex feature breakdown specialist
 
@@ -102,32 +167,6 @@ Specialized agents for development tasks:
 - **[`context`](.opencode/command/context.md)**: Context analysis and workspace understanding
 - **[`optimize`](.opencode/command/optimize.md)**: Performance improvements
 - **[`test`](.opencode/command/test.md)**: Test execution and validation
-
-## 🌐 Multi-Language Support
-
-### 🟣 Elixir Ecosystem
-
-- **Architecture**: OTP applications with supervision trees
-- **Patterns**: GenServer, Agent, Task, Supervisor
-- **Security**: Process isolation, secure random generation
-- **Testing**: ExUnit with property-based testing (StreamData)
-- **Dependencies**: Phoenix ~> 1.7.0, Ecto ~> 3.11.0, Jason ~> 1.4.0
-
-### 🟠 Kotlin Multiplatform (KMP)
-
-- **Architecture**: Shared business logic with platform-specific implementations
-- **Patterns**: expect/actual declarations, sealed classes, coroutines
-- **Security**: Platform-specific security APIs, certificate pinning
-- **Testing**: Kotlin Test framework with platform validation
-- **Dependencies**: Kotlin 1.9.22, Coroutines 1.7.3, Ktor 2.3.7
-
-### 🔵 TypeScript
-
-- **Architecture**: Modular, functional applications with type safety
-- **Patterns**: Result/Either types, async/await, reactive patterns
-- **Security**: XSS prevention, CSRF protection, secure cookies
-- **Testing**: Jest/Vitest with comprehensive mocking
-- **Dependencies**: TypeScript ^5.3.0, Node.js ^20.10.0, Jest ^29.7.0
 
 ## 🛡️ Security Framework
 
