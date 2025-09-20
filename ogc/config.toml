@@ -19,6 +19,12 @@ worktrees = { enabled = true, vcs = "git", agent = "build", model = "anthropic/c
 clean = { enabled = true, lang = "elixir", agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
 ], additional_files_strategy = "merge", include_base_template = true }
 
+# include_base_template = true will include the base template in the additional_files
+#  Path for base template is control/commands/generic/optimizer/base.md. lang = elixir | kotlin | typescript. more coming soon
+# Lang additional template in control/commands/generic/optimizer/<lang>.md
+optimizer = { enabled = true, lang = "elixir", agent = "build", model = "anthropic/claude-sonnet-4-20250514", template = "default", template_file = "", additional_files = [
+], additional_files_strategy = "merge", include_base_template = true }
+
 # template = default | custom, if custom, the template_file must be specified
 # The default template is in control/commands/generic/prompter.md
 # additional_files is a list of files to be included/passed to llm
