@@ -10,10 +10,22 @@
 ## 🚀 Quick Start
 
 ### 1. Install OpenCode CLI
-
+ (opencode cli) [https://opencode.ai]
 ```bash
 # Follow official documentation
 curl -sSL https://opencode.dev/install.sh | bash
+
+# On Mac
+brew install sst/tap/opencode
+
+#  NPM (nodejs)
+npm install -g opencode-ai
+
+# Bun
+bun install -g opencode-ai
+
+# Paru
+paru -S opencode-bin
 ```
 
 ### 2. Generate Agent Configuration
