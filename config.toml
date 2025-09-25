@@ -120,7 +120,7 @@ additional_files = [
 additional_files_strategy = "merge"
 description = "Multi-language implementation agent for modular and functional development"
 mode = "primary"
-model = "claude-4-sonnet"
+model = "anthropic/claude-sonnet-4-20250514"
 temperature = 0.1
 
 [opencode.agents.codebase-agent.permissions.tools]
@@ -157,7 +157,7 @@ additional_files = [
 additional_files_strategy = "merge"
 description = "Breaks down complex features into small, verifiable subtasks"
 mode = "primary"
-model = "claude-4-sonnet"
+model = "anthropic/claude-sonnet-4-20250514"
 temperature = 0.1
 
 [opencode.agents.task-manager.permissions.tools]
@@ -280,7 +280,7 @@ additional_files = [
 additional_files_strategy = "merge"
 description = "Code review, security, and quality assurance agent"
 mode = "subagent"
-model = "claude-4-sonnet"
+model = "anthropic/claude-sonnet-4-20250514"
 temperature = 0.1
 
 [opencode.agents.subagents.reviewer.permissions.tools]
@@ -363,7 +363,7 @@ additional_files_strategy = "merge"
 include_base_template = true
 description = "Executes coding subtasks in sequence, ensuring completion as specified"
 mode = "subagent"
-model = "claude-4-sonnet"
+model = "anthropic/claude-sonnet-4-20250514"
 temperature = 0
 
 [opencode.agents.subagents.coder-agent.permissions.tools]
