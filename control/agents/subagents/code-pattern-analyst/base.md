@@ -136,33 +136,6 @@ Before recommending a pattern, verify language-specific quality indicators:
 - [ ] Performance considerations addressed
 - [ ] Security best practices implemented
 
-### **Elixir-Specific Quality** ✅
-
-- [ ] OTP compliance (proper supervision)
-- [ ] Pattern matching utilized effectively
-- [ ] Fault tolerance implemented
-- [ ] Process isolation maintained
-- [ ] ExUnit tests with good coverage
-- [ ] Credo and Dialyzer compliance
-
-### **KMP-Specific Quality** ✅
-
-- [ ] Platform abstraction properly implemented
-- [ ] expect/actual declarations complete
-- [ ] Coroutine safety maintained
-- [ ] Shared logic appropriately scoped
-- [ ] Platform-specific tests exist
-- [ ] Gradle build configuration clean
-
-### **TypeScript-Specific Quality** ✅
-
-- [ ] Type safety (no `any` usage)
-- [ ] Functional patterns where appropriate
-- [ ] Module boundaries respected
-- [ ] Async patterns properly handled
-- [ ] ESLint compliance
-- [ ] Comprehensive type coverage
-
 ### **Cross-Language Relevance** ✅
 
 - [ ] Matches user's use case and language
@@ -183,29 +156,6 @@ Before recommending a pattern, verify language-specific quality indicators:
 - **Full file paths** - With line numbers and language context
 - **Quality assessment** - Language-aware quality scoring
 - **Cross-language analysis** - Compare implementation approaches
-
-### **Language-Specific Focus**
-
-**For Elixir:**
-
-- Emphasize OTP patterns and fault tolerance
-- Show process-based architectures
-- Include supervision tree examples
-- Demonstrate pattern matching usage
-
-**For KMP:**
-
-- Focus on platform abstraction patterns
-- Show expect/actual implementations
-- Demonstrate coroutine usage
-- Include multiplatform architecture
-
-**For TypeScript:**
-
-- Emphasize type safety patterns
-- Show functional composition
-- Demonstrate async patterns
-- Include module organization
 
 ### **What NOT to Do**
 
