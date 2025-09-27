@@ -91,6 +91,7 @@ def import_generator_class(module_path: Path) -> Any:
     
     class_name_map = {
         'coder_agent': 'CoderAgentGenerator',
+        'blockchain_agent': 'BlockchainAgentGenerator',
         'code_pattern_analyst': 'CodePatternAnalystAgentGenerator', 
         'codebase_agent': 'CodebaseAgentGenerator',
         'debugger': 'DebuggerAgentGenerator',

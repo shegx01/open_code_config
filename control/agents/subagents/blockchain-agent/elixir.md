@@ -1,0 +1,24 @@
+### Elixir for Blockchain Development
+
+- Use pattern matching for blockchain data structure validation
+- Leverage GenServers for managing blockchain connection state
+- Implement proper supervision trees for blockchain processes
+- Use Task.async for concurrent blockchain operations
+- Follow OTP principles for fault-tolerant blockchain applications
+- Use Ecto for blockchain data persistence and validation
+- Implement proper error handling with {:ok, result} | {:error, reason} patterns
+- Use ExUnit for comprehensive blockchain integration testing
+- Leverage Phoenix LiveView for real-time blockchain UI updates
+- Use Jason for JSON encoding/decoding of blockchain data
+- Implement proper configuration management with Mix.Config
+- Use Telemetry for blockchain operation monitoring
+- Follow functional programming principles for blockchain logic
+- Use Streams for processing large blockchain datasets
+- Implement proper timeout handling for blockchain operations
+- Use GenStage for blockchain event processing pipelines
+- Leverage Agent for simple blockchain state management
+- Use proper documentation with @doc and @spec annotations
+- Implement blockchain-specific protocols and behaviours
+- Use Umbrella projects for complex blockchain applications
+- Follow Elixir naming conventions for blockchain modules
+- Use Mix tasks for blockchain deployment and management scripts

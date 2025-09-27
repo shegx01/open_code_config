@@ -1,0 +1,25 @@
+### TypeScript for Blockchain Development
+
+- Use strong typing for all blockchain interactions and data structures
+- Implement comprehensive error handling for blockchain transactions
+- Follow Web3.js/Ethers.js best practices for contract interactions
+- Create type-safe contract ABIs and interfaces
+- Implement proper transaction signing and validation
+- Use BigNumber/ethers.BigNumber for handling token amounts
+- Implement gas optimization patterns
+- Follow security best practices for private key management
+- Use environment variables for sensitive blockchain configuration
+- Implement proper event handling and logging
+- Write comprehensive tests including contract interaction scenarios
+- Use async/await patterns for blockchain transactions
+- Maintain clean separation between blockchain and business logic
+- Implement proper transaction receipt validation
+- Use TypeScript decorators for contract interfaces where appropriate
+- Use OpenZeppelin standards wherever possible, and highlight if it isn't possible using OpenZeppelin
+- Implement proper wallet connection and user authentication flows
+- Use typed contract factories for deployment and interaction
+- Implement proper network detection and switching
+- Handle blockchain-specific errors with custom error types
+- Use proper TypeScript generics for reusable blockchain utilities
+- Implement type-safe event filtering and parsing
+- Use strict TypeScript configuration for blockchain projects
