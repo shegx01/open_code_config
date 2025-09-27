@@ -19,6 +19,11 @@ pip install -r requirements.txt
 
 echo "Setup complete!"
 echo ""
+
+echo "Running the initialization script..."
+python3 init.py
+echo ""
+
 echo "To use the generators:"
 echo "  source .venv/bin/activate"
 echo "  python3 control/commands/scripts/commit.py"

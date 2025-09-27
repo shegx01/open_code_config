@@ -1,31 +1,19 @@
 # OpenCode Agents - Custom Agent Configuration
 
-## 🌟 Key Features
-- 🛡️ **Security-First Architecture**: OWASP compliance, comprehensive validation, authentication-first design
-- 🔄 **Two-Phase Approval Workflow**: Plan → Approval → Implementation with quality gates
-- 🤖 **Intelligent Agent Coordination**: Primary agents, specialized subagents, and command agents
-- 📚 **Learning & Research Capabilities**: Automated dependency research and best practice integration
-- ⚡ **Enterprise-Grade Quality**: Comprehensive testing, documentation, and validation frameworks
+A comprehensive, security-first agent configuration system for OpenCode with multi-language support and specialized domain expertise.
+
 
 ## 🚀 Quick Start
 
 ### 1. Install OpenCode CLI
- (opencode cli) [https://opencode.ai]
 ```bash
-# Follow official documentation
+# Follow official documentation at https://opencode.ai
 curl -sSL https://opencode.dev/install.sh | bash
 
-# On Mac
-brew install sst/tap/opencode
-
-#  NPM (nodejs)
-npm install -g opencode-ai
-
-# Bun
-bun install -g opencode-ai
-
-# Paru
-paru -S opencode-bin
+# Or via package managers
+brew install sst/tap/opencode        # macOS
+npm install -g opencode-ai          # Node.js
+bun install -g opencode-ai          # Bun
 ```
 
 ### 2. Generate Agent Configuration
@@ -33,274 +21,97 @@ paru -S opencode-bin
 ```bash
 # Clone this repository
 git clone git@github.com:shegx01/open_code_config.git
-cd opencode-agents
+cd open_code_config
 
 # Run the initialization script
-python init.py
+./setup.sh
 ```
 
-This will generate all agent and command configurations in the `generated/.opencode/` directory.
+**What happens:**
+- ✅ Installs required packages (PyYAML, tomli)
+- 🔍 Discovers 17+ generators (9 agents + 8 commands)
+- ⚙️ Generates ready-to-use `.opencode/` configuration
+- 🎯 Includes specialized agents (blockchain, security, testing, etc.)
 
-**What the initialization script does:**
-
-- ✅ Checks and installs required Python packages (PyYAML, tomli)
-- 🔍 Discovers all 15 generators (8 agents + 7 commands)
-- ⚙️ Generates configuration files for all agents and commands
-- 📊 Provides detailed success/failure/warning feedback
-- 🎯 Creates ready-to-use `.opencode/` directory structure
-
-**Generated directory structure:**
-
-```text
-generated/.opencode/
-├── agent/
-│   ├── codebase-agent.md          # Primary implementation agent
-│   ├── task-manager.md            # Task breakdown agent
-│   └── subagent/
-│       ├── coder-agent.md         # Sequential task executor
-│       ├── code-pattern-analyst.md # Pattern analysis
-│       ├── debugger.md            # Multi-language debugger
-│       ├── documentation.md       # Documentation specialist
-│       ├── reviewer.md            # Security reviewer
-│       └── tester.md              # Test specialist
-└── command/
-    ├── clean.md                   # Repository cleanup
-    ├── commit.md                  # Smart commit messages
-    ├── context.md                 # Context analysis
-    ├── optimizer.md               # Performance optimization
-    ├── prompter.md                # Prompt engineering
-    ├── test.md                    # Test execution
-    └── worktrees.md               # Git worktree management
-```
-
-### 3. Customize Configuration (Optional)
-
-Before copying to your project, you can customize the generated configuration:
+### 3. Copy to Your Project
 
 ```bash
-# Review generated agents and commands
-ls -la generated/.opencode/agent/
-ls -la generated/.opencode/command/
-
-# Edit any agent configurations as needed
-# Example: Modify language settings, permissions, or templates
-```
-
-### 4. Copy Generated Configuration to Your Project
-
-```bash
-# Copy the generated configuration to your project root
+# Copy generated configuration
 cp -r generated/.opencode/ /path/to/your/project/
 
-# Navigate to your project
+# Initialize in your project
 cd /path/to/your/project/
-
-# Verify agent configuration
-opencode --list-agents
-```
-
-### 5. Initialize Your Project with OpenCode Agents
-
-```bash
-# In your project directory (with .opencode/ folder)
 opencode init
-
-# Verify agents are available
 opencode --list-agents
 ```
 
-### 6. Start Development Workflow
+### 4. Start Using Agents
 
 ```bash
-# Complex feature development (recommended)
+# Complex feature development
 opencode --agent task-manager "Implement user authentication system"
-# → Creates structured subtasks → Handoff to coder-agent
 
-# Direct implementation with security focus
-opencode --agent codebase-agent "Add JWT authentication to API"
-# → Two-phase workflow with security checklist
+# Blockchain development
+opencode --agent blockchain-agent "Create ERC20 token contract"
 
 # Security review
-opencode --agent reviewer "Review authentication module for vulnerabilities"
-# → Systematic OWASP-based security analysis
+opencode --agent reviewer "Review code for vulnerabilities"
 ```
 
-## 🏗️ Agent Architecture
+## 🏗️ Available Agents
 
-### 🎯 Primary Agents (Mode: Primary)
+### 🎯 Primary Agents
+- **`codebase-agent`** - Security-first implementation with two-phase workflow
+- **`task-manager`** - Complex feature breakdown into atomic subtasks
 
-**[`codebase-agent`](.opencode/agent/codebase-agent.md)** - Multi-language implementation specialist
-
-- **Purpose**: Security-first implementation across all supported languages
-- **Workflow**: Mandatory two-phase (Plan → Approval → Implementation)
-- **Security**: OWASP compliance, comprehensive validation, authentication-first design
-
-**[`task-manager`](.opencode/agent/task-manager.md)** - Complex feature breakdown specialist
-
-- **Purpose**: Decomposes complex features into atomic, verifiable subtasks
-- **Output**: Structured task files in `/tasks/subtasks/{feature}/`
-- **Workflow**: Two-phase planning with dependency mapping
-
-### 🔧 Subagents (Mode: Subagent)
-
-**[`reviewer`](.opencode/agent/subagents/reviewer.md)** - Security-first code review
-
-- **Focus**: OWASP Top 10 vulnerability detection, risk classification (P0-P3)
-- **Access**: Read-only (no modification capabilities)
-- **Output**: Structured security reports with actionable recommendations
-
-**[`tester`](.opencode/agent/subagents/tester.md)** - Test authoring and TDD specialist
-
-- **Purpose**: Comprehensive test implementation across all languages
-- **Specialties**: Unit testing, integration testing, TDD workflows
-
-**[`documentation`](.opencode/agent/subagents/documentation.md)** - Multi-language documentation agent
-
-- **Enhanced**: Multi-language patterns, quality assessment framework
-- **Features**: Cross-language documentation adaptation, integration with other agents
-
-**[`coder-agent`](.opencode/agent/subagents/coder-agent.md)** - Sequential task execution specialist
-
-- **Purpose**: Executes coding subtasks with precise validation
-- **Enhanced**: Dependency management, learning & research capabilities
-- **Stable Versions**: Phoenix ~> 1.7.0, Kotlin 1.9.22, TypeScript ^5.3.0
-
-**[`codebase-pattern-analyst`](.opencode/agent/subagents/codebase-pattern-analyst.md)** - Multi-language pattern recognition
-
-- **Features**: Language detection, cross-language pattern comparison
-- **Capabilities**: Anti-pattern detection, universal pattern categories
+### 🔧 Specialized Subagents
+- **`blockchain-agent`** - Smart contract and Web3 development specialist
+- **`coder-agent`** - Sequential task execution with validation
+- **`reviewer`** - OWASP-compliant security code review
+- **`tester`** - Comprehensive test authoring and TDD
+- **`documentation`** - Multi-language documentation specialist
+- **`debugger`** - Advanced debugging across languages
+- **`code-pattern-analyst`** - Pattern recognition and analysis
 
 ### ⚡ Command Agents
-
-Specialized agents for development tasks:
-
-- **[`clean`](.opencode/command/clean.md)**: Repository cleanup and maintenance
-- **[`commit`](.opencode/command/commit.md)**: Intelligent commit message generation
-- **[`context`](.opencode/command/context.md)**: Context analysis and workspace understanding
-- **[`optimize`](.opencode/command/optimize.md)**: Performance improvements
-- **[`test`](.opencode/command/test.md)**: Test execution and validation
-
-## 🛡️ Security Framework
-
-### Universal Security Principles
-
-- **Input Validation**: All external inputs validated for type, length, format, range
-- **Authentication First**: Protected operations require authentication
-- **Data Protection**: Encryption in transit (TLS 1.3+) and at rest
-- **Error Handling**: No sensitive information leakage
-- **Dependency Security**: Regular audits and updates
-
-### Language-Specific Security
-
-- **Elixir**: Process isolation, secure ETS tables, Phoenix security headers
-- **KMP**: Platform-specific secure storage, network security per platform
-- **TypeScript**: Content Security Policy, dependency auditing, secure API design
-
-## 🔄 Workflow Patterns
-
-### Two-Phase Approval Workflow
-
-1. **Phase 1: Planning** - Analyze, plan, present for approval
-2. **Phase 2: Implementation** - Execute with validation and quality gates
-
-### Agent Integration Patterns
-
-- `task-manager` → `coder-agent`: Complex features → Sequential implementation
-- `codebase-agent` → `reviewer`: Implementation → Security review
-- `reviewer` → `tester`: Security findings → Test validation
-- `*` → `documentation`: Any changes → Documentation updates
+- **`clean`** - Repository cleanup and maintenance
+- **`commit`** - Intelligent commit message generation
+- **`context`** - Workspace analysis and understanding
+- **`optimize`** - Performance improvements
+- **`test`** - Test execution and validation
+- **`worktrees`** - Git worktree management
 
 ## 📋 Usage Examples
 
 ```bash
 # Complex feature development
 opencode --agent task-manager "Implement user authentication system"
-# → Creates structured subtasks → Handoff to coder-agent
+
+# Blockchain smart contract development
+opencode --agent blockchain-agent "Create ERC20 token with minting functionality"
 
 # Direct implementation with security focus
 opencode --agent codebase-agent "Add JWT authentication to API"
-# → Two-phase workflow with security checklist
 
 # Security review
 opencode --agent reviewer "Review authentication module for vulnerabilities"
-# → Systematic OWASP-based security analysis
 
-# Sequential task execution
-opencode --agent coder-agent "Execute authentication subtasks in order"
-# → Precise sequential implementation with validation
+# Documentation updates
+opencode --agent documentation "Update API documentation for new endpoints"
 
-# Pattern analysis across languages
-opencode --agent codebase-pattern-analyst "Analyze authentication patterns"
-# → Cross-language pattern comparison and recommendations
+# Repository cleanup
+opencode --command clean "Remove unused dependencies and artifacts"
 ```
 
-## 🔒 Permissions & Safety
+## 🔒 Security & Permissions
 
-### Universal Restrictions
+All agents follow strict security guidelines:
+- 🚫 **Blocked**: Access to sensitive files (`*.env`, `*.key`, `*.secret`)
+- ⚠️ **Restricted**: Destructive operations (`rm -rf`, `sudo`)
+- ✅ **Allowed**: Language-specific development tools
+- ❓ **Ask Permission**: System-level operations
 
-- **Sensitive Files**: No access to `*.env*`, `*.key`, `*.secret`, `*.pem`
-- **Build Artifacts**: No modification of `node_modules/`, `_build/`, `deps/`, `build/`
-- **Version Control**: No direct `.git/` modifications
-
-### Bash Command Safety
-
-- **Denied**: `rm -rf *`, `sudo *` (destructive operations)
-- **Allowed**: Language tools (`mix *`, `./gradlew *`, `npm *`, `yarn *`, `git *`)
-- **Ask Permission**: System operations (`chmod *`, `curl *`, `docker *`)
-
-Repository guardrails live in `.opencode/permissions.json`. Scope rules per-agent inside each agent file under `permissions`.
-
-## 🔧 Configuration
-
-### Environment Setup (Optional)
-
-```bash
-# Copy the example environment file
-cp env.example .env
-
-# Configure Telegram notifications (optional)
-# Get bot token from @BotFather on Telegram
-# Get chat ID by messaging your bot and checking the API
-```
-
-### Available Commands
-
-Command agents are available in `.opencode/command/` for specialized development tasks:
-
-- **`clean`**: Repository cleanup and maintenance operations
-- **`commit`**: Intelligent commit message generation and staging
-- **`context`**: Context analysis and workspace understanding
-- **`optimize`**: Code optimization and performance improvements
-- **`prompter`**: Prompt engineering and template management
-- **`test`**: Test execution and validation workflows
-- **`worktrees`**: Git worktree management and branching strategies
-
-### Notifications
-
-Notifications enabled via `.opencode/plugin/notification.js`. On macOS uses `osascript` for:
-
-- Session completion alerts
-- Approval-required events
-- Security findings notifications
-
-## ✅ Quality Assurance
-
-### Validation Requirements
-
-- **Compilation**: All code must compile without errors
-- **Testing**: Relevant tests must pass before completion
-- **Security**: Security checklists must be validated
-- **Documentation**: Code includes necessary annotations
-- **Performance**: Performance targets must be met
-
-### Handoff Protocols
-
-Each agent provides structured handoff recommendations:
-
-- Security concerns → `@reviewer`
-- Testing needs → `@tester`
-- Documentation updates → `@documentation`
-- Complex breakdowns → `@task-manager`
+**See**: [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md) for detailed security settings.
 
 ## 📚 Documentation
 
