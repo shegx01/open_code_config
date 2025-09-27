@@ -2,10 +2,10 @@
 
 A comprehensive, security-first agent configuration system for OpenCode with multi-language support and specialized domain expertise.
 
-
 ## 🚀 Quick Start
 
 ### 1. Install OpenCode CLI
+
 ```bash
 # Follow official documentation at https://opencode.ai
 curl -sSL https://opencode.dev/install.sh | bash
@@ -28,6 +28,7 @@ cd open_code_config
 ```
 
 **What happens:**
+
 - ✅ Installs required packages (PyYAML, tomli)
 - 🔍 Discovers 17+ generators (9 agents + 8 commands)
 - ⚙️ Generates ready-to-use `.opencode/` configuration
@@ -61,10 +62,12 @@ opencode --agent reviewer "Review code for vulnerabilities"
 ## 🏗️ Available Agents
 
 ### 🎯 Primary Agents
+
 - **`codebase-agent`** - Security-first implementation with two-phase workflow
 - **`task-manager`** - Complex feature breakdown into atomic subtasks
 
 ### 🔧 Specialized Subagents
+
 - **`blockchain-agent`** - Smart contract and Web3 development specialist
 - **`coder-agent`** - Sequential task execution with validation
 - **`reviewer`** - OWASP-compliant security code review
@@ -74,6 +77,7 @@ opencode --agent reviewer "Review code for vulnerabilities"
 - **`code-pattern-analyst`** - Pattern recognition and analysis
 
 ### ⚡ Command Agents
+
 - **`clean`** - Repository cleanup and maintenance
 - **`commit`** - Intelligent commit message generation
 - **`context`** - Workspace analysis and understanding
@@ -106,6 +110,7 @@ opencode --command clean "Remove unused dependencies and artifacts"
 ## 🔒 Security & Permissions
 
 All agents follow strict security guidelines:
+
 - 🚫 **Blocked**: Access to sensitive files (`*.env`, `*.key`, `*.secret`)
 - ⚠️ **Restricted**: Destructive operations (`rm -rf`, `sudo`)
 - ✅ **Allowed**: Language-specific development tools
