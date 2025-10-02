@@ -22,7 +22,7 @@ opencode --agent task-manager "Implement user authentication system"
 ### Agent Integration Patterns
 
 - `task-manager` → `coder-agent`: Complex features → Sequential implementation
-- `codebase-agent` → `reviewer`: Implementation → Security review  
+- `codebase-agent` → `reviewer`: Implementation → Security review
 - `reviewer` → `tester`: Security findings → Test validation
 - `*` → `documentation`: Any changes → Documentation updates
 
@@ -36,7 +36,7 @@ opencode --agent task-manager "Implement user authentication system"
 # Step 1: Break down complex feature
 opencode --agent task-manager "Implement OAuth2 authentication with JWT tokens"
 
-# Step 2: Execute subtasks sequentially  
+# Step 2: Execute subtasks sequentially
 opencode --agent coder-agent "Execute authentication subtasks in order"
 
 # Step 3: Security review
@@ -162,7 +162,7 @@ opencode --agent codebase-agent "Implement secure password reset functionality f
 # Security validation
 opencode --agent reviewer "OWASP Top 10 security review of password reset feature"
 
-# Security testing  
+# Security testing
 opencode --agent tester "Create security tests for password reset including attack scenarios"
 ```
 

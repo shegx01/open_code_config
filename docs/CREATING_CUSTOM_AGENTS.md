@@ -21,12 +21,14 @@ OpenCode agents consist of three main components:
 ### Step 1: Plan Your Agent
 
 Before creating files, define:
+
 - **Purpose**: What specific domain/task will your agent handle?
 - **Scope**: Primary agent, subagent, or command agent?
 - **Languages**: Which programming languages will it support?
 - **Permissions**: What access does it need (read/write/bash)?
 
 **Example: Blockchain Agent**
+
 - Purpose: Specialized blockchain and smart contract development
 - Scope: Subagent (works with other agents)
 - Languages: TypeScript, Elixir
@@ -41,6 +43,7 @@ mkdir -p control/agents/subagents/{your-agent-name}/
 ```
 
 **For language-specific agents:**
+
 ```bash
 # Example structure
 control/agents/subagents/blockchain-agent/
@@ -50,6 +53,7 @@ control/agents/subagents/blockchain-agent/
 ```
 
 **For simple agents:**
+
 ```bash
 # Single file for simple agents
 control/agents/subagents/your-agent.md
@@ -98,6 +102,7 @@ You are a [specialized description of your agent]. Your primary responsibility i
 ```
 
 **Key sections to include:**
+
 - **Purpose**: Clear definition of the agent's role
 - **Core Responsibilities**: What the agent does
 - **Workflow**: Step-by-step process
@@ -121,6 +126,7 @@ For each supported language, create specific guidelines:
 ```
 
 **Example TypeScript template:**
+
 ```markdown
 ### TypeScript for Blockchain Development
 
@@ -164,31 +170,31 @@ class YourAgentGenerator:
     def __init__(self, config_path: str = "config.toml"):
         # [Implementation following the blockchain_agent.py pattern]
         pass
-    
+
     def validate_agent_config(self, config: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         # Extract your agent's config from TOML
         opencode_config = config.get('opencode', {})
         agents_config = opencode_config.get('agents', {})
         subagents_config = agents_config.get('subagents', {})
         your_agent_config = subagents_config.get('{your-agent-name}', {})
-        
+
         if not your_agent_config:
             print("No {your-agent-name} configuration found in TOML file")
             return None
-            
+
         if not your_agent_config.get('enabled', True):
             print("{Your-agent-name} subagent is disabled")
             return None
-            
+
         return your_agent_config
-    
+
     # [Copy other methods from blockchain_agent.py and adapt]
-    
+
 def main():
     config_path = sys.argv[1] if len(sys.argv) > 1 else "config.toml"
     generator = YourAgentGenerator(config_path)
     success = generator.generate()
-    
+
     if success:
         print("{Your-agent-name} subagent configuration generated successfully")
     else:
@@ -259,6 +265,7 @@ python3 init.py
 ```
 
 Check for:
+
 - ✅ Your agent appears in the generator list
 - ✅ Configuration is generated successfully
 - ✅ No errors in the output
@@ -273,6 +280,7 @@ cat generated/.opencode/agent/subagent/your-agent-name.md
 ```
 
 Verify:
+
 - **Frontmatter**: Contains correct configuration and permissions
 - **Base Content**: Your base template is included
 - **Language Content**: Language-specific sections are properly formatted
@@ -322,29 +330,34 @@ def validate_language(self, lang: str) -> bool:
 ## 📚 Best Practices
 
 ### 1. Follow Naming Conventions
+
 - **Agent Names**: Use kebab-case (e.g., `blockchain-agent`)
 - **File Names**: Match directory structure
 - **Class Names**: Use PascalCase with "Generator" suffix
 
 ### 2. Comprehensive Documentation
+
 - Include clear purpose and scope
 - Document all constraints and limitations
 - Provide integration guidelines
 - Include handoff recommendations
 
 ### 3. Security Considerations
+
 - Define restrictive permissions by default
 - Explicitly allow only necessary tools
 - Block access to sensitive files
 - Use "ask" permission for potentially dangerous operations
 
 ### 4. Quality Gates
+
 - Define clear validation criteria
 - Include compilation/syntax checks
 - Specify testing requirements
 - Document quality standards
 
 ### 5. Integration Patterns
+
 - Define how your agent works with others
 - Provide clear handoff protocols
 - Document expected inputs/outputs
@@ -354,21 +367,25 @@ def validate_language(self, lang: str) -> bool:
 ### Common Issues
 
 **Generator not found:**
+
 - Check `class_name_map` in `init.py`
 - Verify file name matches expected pattern
 - Ensure class name follows convention
 
 **TOML syntax errors:**
+
 - Validate TOML syntax with online validators
 - Check quotes around strings with special characters
 - Ensure proper escaping of paths
 
 **Template not found:**
+
 - Verify file paths in generator script
 - Check directory structure
 - Ensure file names match constants
 
 **Permission errors:**
+
 - Check TOML syntax in permissions section
 - Verify rule format: `"pattern" = "action"`
 - Ensure proper quote escaping
@@ -376,6 +393,7 @@ def validate_language(self, lang: str) -> bool:
 ## 🎯 Real-World Example
 
 The blockchain agent created in this repository demonstrates:
+
 - ✅ Comprehensive base template with security focus
 - ✅ TypeScript and Elixir language specializations
 - ✅ Domain-specific permissions (blockchain tools)
